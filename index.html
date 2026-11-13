@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#f4eddf"><meta name="description" content="BeeSmart Farmer ระบบบันทึกฟาร์มผึ้งแบบออฟไลน์"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="apple-mobile-web-app-title" content="BeeSmart">
+<link rel="manifest" href="manifest.webmanifest"><link rel="apple-touch-icon" href="icons/icon-192.png">
+<link rel="stylesheet" href="styles.css"><title>BeeSmart Farmer</title>
+</head>
+<body>
+<header class="top"><div><div class="brand">🐝 BeeSmart Farmer</div><div id="greeting" class="muted">ระบบจัดการฟาร์มผึ้งแบบออฟไลน์</div></div><span class="offline"><i></i> ออฟไลน์พร้อมใช้</span></header>
+<main>
+<section id="welcome" class="panel hidden"><h1>เริ่มต้นใช้งาน</h1><p>สร้างโปรไฟล์เจ้าของฟาร์ม ข้อมูลจะเก็บไว้ในอุปกรณ์นี้</p><form id="ownerForm" class="stack"><label>ชื่อเจ้าของฟาร์ม<input name="name" required placeholder="ชื่อ-นามสกุล"></label><label>ชื่อหน่วยงาน (ถ้ามี)<input name="org"></label><label>เบอร์โทรศัพท์<input name="phone" inputmode="tel"></label><button class="primary">บันทึกโปรไฟล์</button></form></section>
+<section id="app" class="hidden">
+<div id="view-home" class="view">
+<h1>ภาพรวมฟาร์ม</h1><p class="muted">ข้อมูลการเลี้ยงผึ้งในอุปกรณ์นี้</p>
+<div class="hero"><span>รังผึ้งที่ใช้งานอยู่</span><strong id="k-hives">0 <small>รัง</small></strong><small>BeeSmart Farmer · Offline Standalone</small></div>
+<div class="stats"><div><b id="k-farms">0</b><span>ฟาร์ม</span></div><div><b id="k-apiaries">0</b><span>จุดเลี้ยง</span></div><div><b id="k-inspections">0</b><span>ตรวจรัง</span></div></div>
+<div class="twostats"><div class="panel"><span>รายรับสะสม</span><b class="green" id="k-income">฿0</b></div><div class="panel"><span>รายจ่ายสะสม</span><b class="red" id="k-expense">฿0</b></div></div>
+<div class="panel"><h2>เริ่มต้นจัดการ</h2><div class="quick"><button data-action="farm">＋ เพิ่มฟาร์ม</button><button data-action="apiary">＋ เพิ่มจุดเลี้ยง</button><button data-action="hive">＋ เพิ่มรังผึ้ง</button></div></div>
+<div class="panel"><h2>กิจกรรมด่วน</h2><div class="quick"><button data-action="inspection">ตรวจรัง</button><button data-action="feeding">ให้อาหาร</button><button data-action="harvest">เก็บเกี่ยว</button></div></div>
+</div>
+<div id="view-farms" class="view hidden"><div class="heading"><h1>ฟาร์มของฉัน</h1><button class="primary" data-action="farm">＋ เพิ่มฟาร์ม</button></div><div id="farmsList" class="cards"></div><h2>จุดเลี้ยงผึ้ง</h2><div id="apiariesList" class="cards"></div></div>
+<div id="view-hives" class="view hidden"><div class="heading"><h1>จัดการรังผึ้ง</h1><button class="primary" data-action="hive">＋ เพิ่มรัง</button></div><div id="hivesList" class="cards"></div></div>
+<div id="view-activity" class="view hidden"><h1>บันทึกกิจกรรม</h1><div class="panel quick vertical"><button data-action="inspection">＋ บันทึกการตรวจรัง</button><button data-action="feeding">＋ บันทึกการให้อาหาร</button><button data-action="harvest">＋ บันทึกการเก็บเกี่ยว</button></div><h2>ประวัติล่าสุด</h2><div id="activityList" class="cards"></div></div>
+<div id="view-account" class="view hidden"><h1>บัญชีฟาร์ม</h1><div class="panel quick"><button data-action="income">＋ บันทึกรายรับ</button><button data-action="expense">＋ บันทึกรายจ่าย</button></div><div id="moneyList" class="cards"></div></div>
+<div id="view-tools" class="view hidden"><h1>ข้อมูลและตั้งค่า</h1><div class="panel stack"><h2>โปรไฟล์เจ้าของ</h2><div id="ownerInfo"></div><button data-action="edit-owner">แก้ไขโปรไฟล์</button></div><div class="panel stack"><h2>สำรองและกู้คืนข้อมูล</h2><p class="muted">ส่งออกเป็นไฟล์ JSON เพื่อเก็บไว้ในที่ปลอดภัย หรือเลือกไฟล์เดิมเพื่อนำเข้ากลับ</p><button class="primary" id="exportBtn">ส่งออกข้อมูลสำรอง</button><label class="filebtn">นำเข้าข้อมูลสำรอง<input id="importFile" type="file" accept="application/json,.json"></label><button class="danger" id="clearBtn">ล้างข้อมูลในอุปกรณ์นี้</button></div><div class="panel"><b>รุ่นทดลองเว็บ 1.0</b><p class="muted">ข้อมูลเก็บใน IndexedDB ของเบราว์เซอร์นี้ ไม่ส่งไปยังเซิร์ฟเวอร์โดยแอป</p></div></div>
+</section>
+</main>
+<nav id="nav" class="bottom hidden"><button data-tab="home" class="active">⌂<small>หน้าหลัก</small></button><button data-tab="farms">🌿<small>ฟาร์ม</small></button><button data-tab="hives">🐝<small>รังผึ้ง</small></button><button data-tab="activity">📋<small>กิจกรรม</small></button><button data-tab="account">฿<small>บัญชี</small></button><button data-tab="tools">⚙<small>อื่น ๆ</small></button></nav>
+<dialog id="dlg"><form id="dlgForm" method="dialog"><div class="dialogHead"><h2 id="dlgTitle">บันทึกข้อมูล</h2><button type="button" class="x" id="closeDlg">×</button></div><div id="dlgFields" class="stack"></div><div class="dialogActions"><button type="button" id="cancelDlg">ยกเลิก</button><button class="primary" id="saveDlg">บันทึก</button></div></form></dialog>
+<div id="toast" role="status"></div>
+<script src="app.js"></script>
+<script>
+if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost')) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./sw.js').catch((error) => {
+      console.error('BeeSmart offline setup failed:', error);
+    });
+  });
+}
+</script>
+</body></html>

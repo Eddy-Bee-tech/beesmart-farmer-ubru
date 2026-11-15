@@ -1,4 +1,4 @@
-const CACHE='beesmart-web-v9-1-report-export';
+const CACHE='beesmart-web-v9-2-report-options';
 const ASSETS=['./','./index.html','./styles.css','./app.js','./manifest.webmanifest','./icon-192.png','./icon-512.png'];
 self.addEventListener('install',event=>event.waitUntil((async()=>{const cache=await caches.open(CACHE);await cache.addAll(ASSETS);await self.skipWaiting()})()));
 self.addEventListener('activate',event=>event.waitUntil((async()=>{const keys=await caches.keys();await Promise.all(keys.filter(key=>key.startsWith('beesmart-web-')&&key!==CACHE).map(key=>caches.delete(key)));await self.clients.claim()})()));
